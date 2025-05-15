@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
+import LearnASL from "./LearnASL"; // Import the new component
 
 function Dashboard() {
   const [isInCall, setIsInCall] = useState(false);
   const [joinRoomId, setJoinRoomId] = useState("");
   const [showJoinForm, setShowJoinForm] = useState(false);
+  const [showLearnASL, setShowLearnASL] = useState(false); // New state for showing Learn ASL component
 
   // Check URL for roomID parameter on component mount
   useEffect(() => {
@@ -110,9 +112,23 @@ function Dashboard() {
     }
   };
 
+  // Handle Learn ASL button click
+  const handleLearnASL = () => {
+    setShowLearnASL(true);
+  };
+
+  // Handle back button click from Learn ASL component
+  const handleBackFromLearn = () => {
+    setShowLearnASL(false);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
-      {!isInCall ? (
+      {isInCall ? (
+        <div id="zego-container" className="w-full h-screen"></div>
+      ) : showLearnASL ? (
+        <LearnASL onBack={handleBackFromLearn} />
+      ) : (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="bg-white shadow rounded-lg overflow-hidden">
             <div className="px-6 py-8">
@@ -168,7 +184,7 @@ function Dashboard() {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Video Call Card */}
                 <div className="bg-indigo-50 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex flex-col items-center text-center">
@@ -229,39 +245,11 @@ function Dashboard() {
                       Access tutorials and resources to learn American Sign
                       Language
                     </p>
-                    <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    <button 
+                      onClick={handleLearnASL}
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    >
                       Learn Now
-                    </button>
-                  </div>
-                </div>
-
-                {/* Practice ASL Card */}
-                <div className="bg-yellow-50 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-8 w-8 text-yellow-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                        />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      Practice ASL
-                    </h3>
-                    <p className="text-sm text-gray-500 mb-4">
-                      Practice your ASL skills with interactive exercises
-                    </p>
-                    <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                      Start Practice
                     </button>
                   </div>
                 </div>
@@ -269,8 +257,6 @@ function Dashboard() {
             </div>
           </div>
         </div>
-      ) : (
-        <div id="zego-container" className="w-full h-screen"></div>
       )}
     </div>
   );
