@@ -17,7 +17,7 @@ function Dashboard() {
   }, []);
 
   // Generate a unique room ID
-  const roomID = "asl-video-room-" + Date.now().toString();
+  const roomID = Date.now().toString();
 
   // Random user ID
   const userID = Math.floor(Math.random() * 10000).toString();
